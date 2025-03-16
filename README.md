@@ -25,9 +25,9 @@ This project is an **AI-based exam scheduling system** designed to automate the 
 ├── stored_procedure.sql      # SQL for creating stored procedure
 ├── Exam_Reports/             # Folder to store exported reports
 └── README.md                 # Project documentation
-```-->
+```
 
----
+--- -->
 
 ## 💻 Technologies Used
 - **Python**  
