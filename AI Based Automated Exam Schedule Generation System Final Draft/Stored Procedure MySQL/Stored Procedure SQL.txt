@@ -1,0 +1,29 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generate_exam_schedule`()
+BEGIN
+    -- Example logic to create a schedule based on classroom capacity and availability
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE c_id INT;
+    DECLARE c_name VARCHAR(255);
+    DECLARE c_students INT;
+    DECLARE c_duration INT;
+    DECLARE cur CURSOR FOR SELECT course_id, course_name, students_registered, duration FROM courses;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+    read_loop: LOOP
+        FETCH cur INTO c_id, c_name, c_students, c_duration;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Example: Find an available classroom and time slot
+        INSERT INTO exam_schedule (course_id, course_name, students_registered, time_slot, classroom_name)
+        SELECT c_id, c_name, c_students, '09:00-11:00', classroom_name
+        FROM classrooms
+        WHERE capacity >= c_students
+        LIMIT 1;
+    END LOOP;
+    CLOSE cur;
+END$$
+DELIMITER ;
